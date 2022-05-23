@@ -80,10 +80,10 @@ func StoreSiswa(nama, kelas, jenjang, smt string) (Response, error) {
 
 	getMaxId := "SELECT max(id) FROM siswa;"
 	rows, err := con.Query(getMaxId)
+	defer rows.Close()
 	if err != nil {
 		return res, err
 	}
-	// defer rows.Close()
 	for rows.Next() {
 		err := rows.Scan(&obj.ID)
 		if err != nil {
