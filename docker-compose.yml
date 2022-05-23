@@ -1,0 +1,32 @@
+version: '3.0'
+services:
+  data-siswa-db:
+    image: postgres
+    ports:
+      - 5430:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=rahasia
+      - POSTGRES_DB=belajar
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+  data-siswa-api:
+    build: ./data-siswa
+    ports:
+      - 8069:8080
+    environment:
+      - DB_HOST=192.168.1.88
+      - DB_PORT=5430
+      - DB_USER=postgres
+      - DB_PASSWORD=rahasia
+      - DB_DATABASE=belajar
+    depends_on:
+      - data-siswa-db
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    ports:
+      - 5050:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@mail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
